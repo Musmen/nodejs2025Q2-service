@@ -16,17 +16,18 @@ import { isUUID } from 'class-validator';
 
 import { UserService } from './user.service';
 
-import type {
-  CreateUserDto,
-  UpdatePasswordDto,
-  User,
-} from 'src/interfaces/user.interface';
 import {
   isValidNewUserDto,
   isValidUpdatePasswordDto,
   removePassword,
   removePasswords,
 } from './common/helpers';
+
+import type {
+  CreateUserDto,
+  UpdatePasswordDto,
+  User,
+} from 'src/interfaces/user.interface';
 
 @Controller('/user')
 export class UserController {
