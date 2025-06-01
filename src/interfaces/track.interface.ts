@@ -5,3 +5,8 @@ export interface Track {
   albumId: string | null;
   duration: number;
 }
+
+export interface CreateTrackDto {
+  name: string;
+  duration: number;
+}
