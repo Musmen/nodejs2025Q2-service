@@ -64,7 +64,7 @@ export class TrackController {
   async updateTrack(
     @Param('id') id: string,
     @Body() updateTrackDto: Omit<Track, 'id'>,
-  ): Promise<void> {
+  ): Promise<Track> {
     if (!isUUID(id)) {
       throw new BadRequestException('Invalid trackId (not UUID)');
     }

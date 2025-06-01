@@ -1,3 +1,4 @@
+import { isDefined } from 'class-validator';
 import type { CreateTrackDto, Track } from 'src/interfaces/track.interface';
 
 class TrackDB {
@@ -25,7 +26,15 @@ class TrackDB {
     currentTrack: Track,
     updateTrackDto: Omit<Track, 'id'>,
   ) => {
-    currentTrack = { ...updateTrackDto, id: currentTrack.id };
+    if (isDefined(updateTrackDto.name)) currentTrack.name = updateTrackDto.name;
+    if (isDefined(updateTrackDto.duration))
+      currentTrack.duration = updateTrackDto.duration;
+    if (updateTrackDto.albumId !== undefined)
+      currentTrack.albumId = updateTrackDto.albumId;
+    if (updateTrackDto.artistId !== undefined)
+      currentTrack.artistId = updateTrackDto.artistId;
+
+    return currentTrack;
   };
 
   deleteTrack = async (currentTrack: Track) => {

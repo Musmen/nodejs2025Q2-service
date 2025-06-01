@@ -15,9 +15,10 @@ export const isValidNewTrackDto = (newTrackDto: CreateTrackDto) => {
 };
 
 export const isValidUpdateTrackDto = (updateTrackDto: Omit<Track, 'id'>) => {
-  const { artistId, albumId } = updateTrackDto;
+  const { name, duration, artistId, albumId } = updateTrackDto;
   if (
-    !isValidNewTrackDto(updateTrackDto) ||
+    (name && typeof name !== 'string') ||
+    (duration && typeof duration !== 'number') ||
     (artistId && !isUUID(artistId)) ||
     (albumId && !isUUID(albumId))
   )
