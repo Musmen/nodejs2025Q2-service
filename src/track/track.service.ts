@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { trackDB } from './db/track.db';
 
-import type { CreateTrackDto, Track } from 'src/interfaces/track.interface';
+import type { Track } from 'src/interfaces/track.interface';
 
 @Injectable()
 export class TrackService {
@@ -11,7 +11,7 @@ export class TrackService {
   getTrackById = async (id: string): Promise<Track | null> =>
     trackDB.getTrackById(id);
 
-  createTrack = async (newTrackDto: CreateTrackDto) =>
+  createTrack = async (newTrackDto: Omit<Track, 'id'>) =>
     trackDB.createTrack(newTrackDto);
 
   updateTrack = async (

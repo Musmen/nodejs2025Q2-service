@@ -1,13 +1,15 @@
-import { isUUID } from 'class-validator';
-import type { CreateTrackDto, Track } from 'src/interfaces/track.interface';
+import { isDefined, isUUID } from 'class-validator';
+import type { Track } from 'src/interfaces/track.interface';
 
-export const isValidNewTrackDto = (newTrackDto: CreateTrackDto) => {
-  const { name, duration } = newTrackDto;
+export const isValidNewTrackDto = (newTrackDto: Omit<Track, 'id'>) => {
+  const { name, duration, artistId, albumId } = newTrackDto;
   if (
     !name ||
     !duration ||
     typeof name !== 'string' ||
-    typeof duration !== 'number'
+    typeof duration !== 'number' ||
+    (artistId && !isUUID(artistId)) ||
+    (albumId && !isUUID(albumId))
   )
     return false;
 
@@ -20,7 +22,11 @@ export const isValidUpdateTrackDto = (updateTrackDto: Omit<Track, 'id'>) => {
     (name && typeof name !== 'string') ||
     (duration && typeof duration !== 'number') ||
     (artistId && !isUUID(artistId)) ||
-    (albumId && !isUUID(albumId))
+    (albumId && !isUUID(albumId)) ||
+    (!isDefined(name) &&
+      !isDefined(duration) &&
+      !isDefined(artistId) &&
+      !isDefined(albumId))
   )
     return false;
 

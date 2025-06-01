@@ -1,5 +1,5 @@
 import { isDefined } from 'class-validator';
-import type { CreateTrackDto, Track } from 'src/interfaces/track.interface';
+import type { Track } from 'src/interfaces/track.interface';
 
 class TrackDB {
   private _tracks: Track[] = [];
@@ -9,7 +9,7 @@ class TrackDB {
   getTrackById = async (id: string): Promise<Track | null> =>
     this._tracks.find((track) => track.id === id) || null;
 
-  createTrack = async (newTrackDto: CreateTrackDto) => {
+  createTrack = async (newTrackDto: Omit<Track, 'id'>) => {
     const newTrack = {
       id: crypto.randomUUID(),
       name: newTrackDto.name,

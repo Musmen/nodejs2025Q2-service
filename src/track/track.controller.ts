@@ -20,7 +20,7 @@ import {
   isValidUpdateTrackDto,
 } from './common/track.helpers';
 
-import type { CreateTrackDto, Track } from 'src/interfaces/track.interface';
+import type { Track } from 'src/interfaces/track.interface';
 
 @Controller('/track')
 export class TrackController {
@@ -49,7 +49,7 @@ export class TrackController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createTrack(@Body() newTrackDto: CreateTrackDto): Promise<Track> {
+  async createTrack(@Body() newTrackDto: Omit<Track, 'id'>): Promise<Track> {
     if (!isValidNewTrackDto(newTrackDto)) {
       throw new BadRequestException(
         'Invalid new track request body, does not contain valid required fields (name, duration)',
