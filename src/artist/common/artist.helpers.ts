@@ -18,7 +18,8 @@ export const isValidUpdateArtistDto = (updateArtistDto: Omit<Artist, 'id'>) => {
   const { name, grammy } = updateArtistDto;
   if (
     (name && typeof name !== 'string') ||
-    (isDefined(grammy) && typeof name !== 'boolean')
+    (isDefined(grammy) && typeof name !== 'boolean') ||
+    (!isDefined(name) && !isDefined(grammy))
   )
     return false;
 

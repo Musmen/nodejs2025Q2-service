@@ -1,3 +1,4 @@
+import { isDefined } from 'class-validator';
 import type { Artist } from 'src/interfaces/artist.interface';
 
 class ArtistDB {
@@ -23,8 +24,10 @@ class ArtistDB {
     currentArtist: Artist,
     updateArtistDto: Omit<Artist, 'id'>,
   ) => {
-    currentArtist.name = updateArtistDto.name;
-    currentArtist.grammy = updateArtistDto.grammy;
+    if (isDefined(updateArtistDto.name))
+      currentArtist.name = updateArtistDto.name;
+    if (isDefined(updateArtistDto.grammy))
+      currentArtist.grammy = updateArtistDto.grammy;
 
     return currentArtist;
   };
