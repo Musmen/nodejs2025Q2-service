@@ -16,7 +16,7 @@ class AlbumDB {
       id: crypto.randomUUID(),
       name,
       year,
-      artistId,
+      artistId: isDefined(artistId) ? artistId : null,
     };
     this._albums.push(newAlbum);
 

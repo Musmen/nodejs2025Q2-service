@@ -10,10 +10,12 @@ class ArtistDB {
     this._artists.find((artist) => artist.id === id) || null;
 
   createArtist = async (newArtistDto: Omit<Artist, 'id'>) => {
+    const { name, grammy } = newArtistDto;
+
     const newArtist = {
       id: crypto.randomUUID(),
-      name: newArtistDto.name,
-      grammy: newArtistDto.grammy,
+      name,
+      grammy,
     };
     this._artists.push(newArtist);
 

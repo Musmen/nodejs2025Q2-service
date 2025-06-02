@@ -18,10 +18,16 @@ import { AlbumService } from './album.service';
 import { isValidAlbumDto } from './common/album.helpers';
 
 import type { Album } from 'src/interfaces/album.interface';
+import { TrackService } from 'src/track/track.service';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Controller('/Album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly trackService: TrackService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -91,6 +97,14 @@ export class AlbumController {
     if (!currentAlbum) {
       throw new NotFoundException(`Album with albumId doesn't exist`);
     }
+
+    (await this.trackService.getAllTracks())
+      .filter((track) => track.albumId === id)
+      .forEach((track) => {
+        track.albumId = null;
+      });
+
+    await this.favoritesService.deleteAlbumById(id);
 
     return this.albumService.deleteAlbum(currentAlbum);
   }

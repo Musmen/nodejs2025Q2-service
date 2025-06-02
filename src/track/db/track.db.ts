@@ -10,12 +10,14 @@ class TrackDB {
     this._tracks.find((track) => track.id === id) || null;
 
   createTrack = async (newTrackDto: Omit<Track, 'id'>) => {
+    const { name, duration, artistId, albumId } = newTrackDto;
+
     const newTrack = {
       id: crypto.randomUUID(),
-      name: newTrackDto.name,
-      duration: newTrackDto.duration,
-      artistId: null,
-      albumId: null,
+      name,
+      duration,
+      artistId: isDefined(artistId) ? artistId : null,
+      albumId: isDefined(albumId) ? albumId : null,
     };
     this._tracks.push(newTrack);
 
