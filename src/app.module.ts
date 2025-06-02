@@ -1,10 +1,23 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+
+import { UserModule } from './user/user.module';
+import { TrackModule } from './track/track.module';
+import { ArtistModule } from './artist/artist.module';
+import { AlbumModule } from './album/album.module';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: './.env',
+      isGlobal: true,
+    }),
+    UserModule,
+    TrackModule,
+    ArtistModule,
+    AlbumModule,
+    FavoritesModule,
+  ],
 })
 export class AppModule {}
