@@ -1,6 +1,6 @@
 import type { Favorites } from 'src/interfaces/favorites.interface';
 import type { Track } from 'src/interfaces/track.interface';
-import type { Album } from 'src/interfaces/Album.interface';
+import type { Album } from 'src/interfaces/album.interface';
 import type { Artist } from 'src/interfaces/artist.interface';
 
 class FavoritesDB {

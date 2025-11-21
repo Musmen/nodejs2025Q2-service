@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { albumDB } from './db/Album.db';
+import { albumDB } from 'src/album/db/album.db';
 
-import type { Album } from 'src/interfaces/Album.interface';
+import type { Album } from 'src/interfaces/album.interface';
 
 @Injectable()
 export class AlbumService {

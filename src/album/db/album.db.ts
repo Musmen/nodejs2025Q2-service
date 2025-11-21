@@ -1,5 +1,5 @@
 import { isDefined } from 'class-validator';
-import type { Album } from 'src/interfaces/Album.interface';
+import type { Album } from 'src/interfaces/album.interface';
 
 class AlbumDB {
   private _albums: Album[] = [];

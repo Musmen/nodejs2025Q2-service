@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { artistDB } from './db/Artist.db';
+import { artistDB } from './db/artist.db';
 
-import type { Artist } from 'src/interfaces/Artist.interface';
+import type { Artist } from 'src/interfaces/artist.interface';
 
 @Injectable()
 export class ArtistService {
