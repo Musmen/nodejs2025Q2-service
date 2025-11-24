@@ -9,9 +9,9 @@ services:
     environment:
       DATABASE_URL: "postgresql://musmen:musmen_secret_key@app_database:5432/home_library_service_db?schema=public"
       CHOKIDAR_USEPOLLING: "true"
-      NODE_ENV: development
     depends_on:
-      - app_database
+      app_database:
+        condition: service_healthy
     networks:
       - app-network
     volumes:
@@ -22,10 +22,28 @@ services:
     build: ./database
     ports:
       - "5432:5432"
+    volumes:
+      - ./database/db:/var/lib/postgresql/data
+      - ./database/logs:/var/log/postgresql
+    command:
+      [
+        "postgres",
+        "-c",
+        "logging_collector=on",
+        "-c",
+        "log_directory=/var/log/postgresql",
+        "-c",
+        "log_filename=postgresql.log",
+      ]
     environment:
       POSTGRES_USER: "musmen"
       POSTGRES_PASSWORD: "musmen_secret_key"
       POSTGRES_DB: "home_library_service_db"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U musmen -d home_library_service_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
     restart: on-failure:3

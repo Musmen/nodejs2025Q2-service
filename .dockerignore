@@ -16,3 +16,8 @@ dist/
 build/
 
 doc/
+
+database/db/
+database/logs/
+
+generated/prisma/

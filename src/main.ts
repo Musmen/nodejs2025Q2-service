@@ -1,17 +1,16 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
 import { prisma } from '../prisma/prisma';
 
-import { AppModule } from './app.module';
-
-const DEFAULT_PORT = 4000;
+import { AppModule } from 'src/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  const port = configService?.get<number>('PORT') || DEFAULT_PORT;
+  const port = configService?.get<number>('PORT') || process.env.APP_PORT;
 
   await app.listen(port);
 }
@@ -21,8 +20,8 @@ bootstrap();
 async function main() {
   const user = await prisma.user.create({
     data: {
-      login: 'Alice' + Date.now().toString(),
-      password: 'alice@prisma.io',
+      login: 'Zorro' + Date.now().toString(),
+      password: 'Zorro@mail.ru',
       version: 1,
       createdAt: Date.now().toString(),
       updatedAt: '0',

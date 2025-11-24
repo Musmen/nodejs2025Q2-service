@@ -36,3 +36,6 @@ lerna-debug.log*
 
 .env
 /generated/prisma
+
+/database/db
+/database/logs/
