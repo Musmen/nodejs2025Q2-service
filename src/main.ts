@@ -20,8 +20,8 @@ bootstrap();
 async function main() {
   const user = await prisma.user.create({
     data: {
-      login: 'Zorro' + Date.now().toString(),
-      password: 'Zorro@mail.ru',
+      login: 'Alice' + Date.now().toString(),
+      password: 'Alice@mail.ru',
       version: 1,
       createdAt: Date.now().toString(),
       updatedAt: '0',
