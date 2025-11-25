@@ -4,6 +4,12 @@ import type {
   User,
 } from 'src/interfaces/user.interface';
 
+export const parseUser = (user): User => ({
+  ...user,
+  createdAt: Number(user.createdAt),
+  updatedAt: Number(user.updatedAt),
+});
+
 export const removePassword = (user: User): Omit<User, 'password'> => {
   const result = { ...user };
 

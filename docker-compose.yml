@@ -9,6 +9,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       CHOKIDAR_USEPOLLING: "true"
+      APP_PORT: ${APP_PORT}
     depends_on:
       app_database:
         condition: service_healthy
@@ -21,7 +22,7 @@ services:
   app_database:
     build: ./database
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - ./database/db:/var/lib/postgresql/data
       - ./database/logs:/var/log/postgresql

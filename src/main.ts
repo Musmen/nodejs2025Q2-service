@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
-import { prisma } from '../prisma/prisma';
+// import { prisma } from '../prisma/prisma';
 
 import { AppModule } from 'src/app.module';
 
@@ -17,22 +17,21 @@ async function bootstrap() {
 
 bootstrap();
 
-async function main() {
-  const user = await prisma.user.create({
-    data: {
-      login: 'Alice' + Date.now().toString(),
-      password: 'Alice@mail.ru',
-      version: 1,
-      createdAt: Date.now().toString(),
-      updatedAt: '0',
-    },
-  });
-  console.log('Created user:', user);
+// async function main() {
+//   const user = await prisma.user.create({
+//     data: {
+//       login: 'Alice',
+//       password: 'Alice@mail.ru',
+//       createdAt: Date.now(),
+//       updatedAt: Date.now(),
+//     },
+//   });
+//   console.log('Created user:', user);
 
-  const allUsers = await prisma.user.findMany();
-  console.log('All users:', JSON.stringify(allUsers, null, 2));
-}
+//   const allUsers = await prisma.user.findMany();
+//   console.log('All users:', allUsers);
+// }
 
-main().then(() => {
-  console.log('main is Ok!');
-});
+// main().then(() => {
+//   console.log('main is Ok!');
+// });
