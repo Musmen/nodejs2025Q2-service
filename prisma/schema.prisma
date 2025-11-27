@@ -37,8 +37,8 @@ model Album {
   name      String
   year      Int
   artistId  String?
-  artist    Artist? @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  tracks    Track[]
+  artist    Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
+  tracks    Track[] 
   favorites FavoriteAlbum[]
 }
 
@@ -48,25 +48,25 @@ model Track {
   artistId  String?
   albumId   String?
   duration  Int
-  album     Album? @relation(fields: [albumId], references: [id], onDelete: Cascade)
-  artist    Artist? @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  album     Album? @relation(fields: [albumId], references: [id], onDelete: SetNull)
+  artist    Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
   favorites FavoriteTrack[]
 }
 
 model FavoriteArtist {
   id       String @id @default(uuid())
-  artistId String
+  artistId String @unique
   artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
 }
 
 model FavoriteAlbum {
   id      String @id @default(uuid())
-  albumId String
+  albumId String @unique
   album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
 }
 
 model FavoriteTrack {
   id      String @id @default(uuid())
-  trackId String
+  trackId String @unique
   track   Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
 }

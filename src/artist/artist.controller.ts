@@ -18,18 +18,10 @@ import { ArtistService } from './artist.service';
 import { isValidArtistDto } from './common/artist.helpers';
 
 import type { Artist } from 'src/interfaces/artist.interface';
-import { FavoritesService } from 'src/favorites/favorites.service';
-import { TrackService } from 'src/track/track.service';
-import { AlbumService } from 'src/album/album.service';
 
 @Controller('/artist')
 export class ArtistController {
-  constructor(
-    private readonly artistService: ArtistService,
-    private readonly trackService: TrackService,
-    private readonly albumService: AlbumService,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly artistService: ArtistService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -101,20 +93,6 @@ export class ArtistController {
     if (!currentArtist) {
       throw new NotFoundException(`Artist with artistId doesn't exist`);
     }
-
-    (await this.albumService.getAllAlbums())
-      .filter((album) => album.artistId === id)
-      .forEach((album) => {
-        album.artistId = null;
-      });
-
-    (await this.trackService.getAllTracks())
-      .filter((track) => track.artistId === id)
-      .forEach((track) => {
-        track.artistId = null;
-      });
-
-    await this.favoritesService.deleteArtistById(id);
 
     return this.artistService.deleteArtist(currentArtist);
   }

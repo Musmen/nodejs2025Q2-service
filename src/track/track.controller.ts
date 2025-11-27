@@ -14,7 +14,6 @@ import {
 import { isUUID } from 'class-validator';
 
 import { TrackService } from './track.service';
-import { FavoritesService } from 'src/favorites/favorites.service';
 
 import {
   isValidNewTrackDto,
@@ -25,10 +24,7 @@ import type { Track } from 'src/interfaces/track.interface';
 
 @Controller('/track')
 export class TrackController {
-  constructor(
-    private readonly trackService: TrackService,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly trackService: TrackService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -98,8 +94,6 @@ export class TrackController {
     if (!currentTrack) {
       throw new NotFoundException(`Track with trackId doesn't exist`);
     }
-
-    await this.favoritesService.deleteTrackById(id);
 
     return this.trackService.deleteTrack(currentTrack);
   }

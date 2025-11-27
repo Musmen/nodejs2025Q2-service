@@ -31,13 +31,13 @@ export class FavoritesService {
 
   deleteTrackById = async (trackId: Track['id']): Promise<void> => {
     await prisma.favoriteTrack.delete({
-      where: { id: trackId },
+      where: { trackId },
     });
   };
 
   getTrackById = async (trackId: Track['id']) =>
     await prisma.favoriteTrack.findUnique({
-      where: { id: trackId },
+      where: { trackId },
       include: { track: true },
     });
 
@@ -48,14 +48,14 @@ export class FavoritesService {
   };
 
   deleteArtistById = async (artistId: Artist['id']): Promise<void> => {
-    await prisma.favoriteTrack.delete({
-      where: { id: artistId },
+    await prisma.favoriteArtist.delete({
+      where: { artistId },
     });
   };
 
   getArtistById = async (artistId: Artist['id']) =>
     await prisma.favoriteArtist.findUnique({
-      where: { id: artistId },
+      where: { artistId },
       include: { artist: true },
     });
 
@@ -67,13 +67,13 @@ export class FavoritesService {
 
   deleteAlbumById = async (albumId: Album['id']): Promise<void> => {
     await prisma.favoriteAlbum.delete({
-      where: { id: albumId },
+      where: { albumId },
     });
   };
 
   getAlbumById = async (albumId: Album['id']) =>
     await prisma.favoriteAlbum.findUnique({
-      where: { id: albumId },
+      where: { albumId },
       include: { album: true },
     });
 }

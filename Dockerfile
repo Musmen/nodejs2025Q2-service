@@ -12,4 +12,4 @@ RUN npm ci --only=production && \
 
 RUN npm install -g nodemon
 
-CMD sh -c "npx prisma migrate reset --force && npx prisma migrate dev --name init && npx prisma generate && npm run start:nodemon"
+CMD sh -c "npx prisma migrate reset --force && npx prisma migrate dev --name init add-cascade-delete && npx prisma generate && npm run start:nodemon"
