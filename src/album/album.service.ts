@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
 
-import { albumDB } from 'src/album/db/album.db';
+import { prisma } from 'prisma/prisma';
 
 import type { Album } from 'src/interfaces/album.interface';
 
 @Injectable()
 export class AlbumService {
-  getAllAlbums = async () => albumDB.getAllAlbums();
+  getAllAlbums = async (): Promise<Album[]> => await prisma.album.findMany();
 
   getAlbumById = async (id: string): Promise<Album | null> =>
-    albumDB.getAlbumById(id);
+    await prisma.album.findUnique({ where: { id } });
 
-  createAlbum = async (newAlbumDto: Omit<Album, 'id'>) =>
-    albumDB.createAlbum(newAlbumDto);
+  createAlbum = async (newAlbumDto: Omit<Album, 'id'>): Promise<Album> =>
+    await prisma.album.create({ data: newAlbumDto });
 
   updateAlbum = async (
-    currentAlbum: Album,
+    { id }: Album,
     updateAlbumDto: Omit<Album, 'id'>,
-  ) => albumDB.updateAlbum(currentAlbum, updateAlbumDto);
+  ): Promise<Album> =>
+    await prisma.album.update({ where: { id }, data: updateAlbumDto });
 
-  deleteAlbum = async (currentAlbum: Album) =>
-    albumDB.deleteAlbum(currentAlbum);
+  deleteAlbum = async ({ id }: Album): Promise<void> => {
+    await prisma.album.delete({ where: { id } });
+  };
 }
