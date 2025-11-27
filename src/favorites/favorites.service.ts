@@ -1,36 +1,79 @@
 import { Injectable } from '@nestjs/common';
 
-import { favoritesDB } from './db/favorites.db';
+import { prisma } from 'prisma/prisma';
 
 import type { Track } from 'src/interfaces/track.interface';
 import type { Album } from 'src/interfaces/album.interface';
 import type { Artist } from 'src/interfaces/artist.interface';
+import type { Favorites } from 'src/interfaces/favorites.interface';
 
 @Injectable()
 export class FavoritesService {
-  getAllFavorites = async () => favoritesDB.getAllFavorites();
+  getAllFavorites = async (): Promise<Favorites> => {
+    const albums: Album[] = await prisma.album.findMany({
+      where: { favorites: { some: {} } },
+    });
+    const tracks: Track[] = await prisma.track.findMany({
+      where: { favorites: { some: {} } },
+    });
+    const artists: Artist[] = await prisma.artist.findMany({
+      where: { favorites: { some: {} } },
+    });
 
-  addTrack = async (trackId: Track['id']) => favoritesDB.addTrack(trackId);
+    return { albums, tracks, artists };
+  };
+
+  addTrack = async (trackId: Track['id']): Promise<void> => {
+    await prisma.favoriteTrack.create({
+      data: { trackId },
+    });
+  };
+
+  deleteTrackById = async (trackId: Track['id']): Promise<void> => {
+    await prisma.favoriteTrack.delete({
+      where: { id: trackId },
+    });
+  };
 
   getTrackById = async (trackId: Track['id']) =>
-    favoritesDB.getTrackById(trackId);
+    await prisma.favoriteTrack.findUnique({
+      where: { id: trackId },
+      include: { track: true },
+    });
 
-  deleteTrackById = async (trackId: Track['id']) =>
-    favoritesDB.deleteTrack(trackId);
+  addArtist = async (artistId: Artist['id']): Promise<void> => {
+    await prisma.favoriteArtist.create({
+      data: { artistId },
+    });
+  };
 
-  addAlbum = async (albumId: Album['id']) => favoritesDB.addAlbum(albumId);
-
-  getAlbumById = async (albumId: Album['id']) =>
-    favoritesDB.getAlbumById(albumId);
-
-  deleteAlbumById = async (albumId: Album['id']) =>
-    favoritesDB.deleteAlbum(albumId);
-
-  addArtist = async (artistId: Artist['id']) => favoritesDB.addArtist(artistId);
+  deleteArtistById = async (artistId: Artist['id']): Promise<void> => {
+    await prisma.favoriteTrack.delete({
+      where: { id: artistId },
+    });
+  };
 
   getArtistById = async (artistId: Artist['id']) =>
-    favoritesDB.getArtistById(artistId);
+    await prisma.favoriteArtist.findUnique({
+      where: { id: artistId },
+      include: { artist: true },
+    });
 
-  deleteArtistById = async (artistId: Artist['id']) =>
-    favoritesDB.deleteArtist(artistId);
+  addAlbum = async (albumId: Album['id']): Promise<void> => {
+    await prisma.favoriteAlbum.create({
+      data: { albumId },
+    });
+  };
+
+  deleteAlbumById = async (albumId: Album['id']): Promise<void> => {
+    await prisma.favoriteAlbum.delete({
+      where: { id: albumId },
+    });
+  };
+
+  getAlbumById = async (albumId: Album['id']) =>
+    await prisma.favoriteAlbum.findUnique({
+      where: { id: albumId },
+      include: { album: true },
+    });
 }

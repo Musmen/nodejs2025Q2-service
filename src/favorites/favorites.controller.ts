@@ -17,7 +17,7 @@ import { TrackService } from 'src/track/track.service';
 import { AlbumService } from 'src/album/album.service';
 import { ArtistService } from 'src/artist/artist.service';
 
-import type { FavoritesResponse } from 'src/interfaces/favorites.interface';
+import type { Favorites } from 'src/interfaces/favorites.interface';
 
 @Controller('/favs')
 export class FavoritesController {
@@ -30,23 +30,8 @@ export class FavoritesController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllFavorites(): Promise<FavoritesResponse> {
-    const { tracks, albums, artists } =
-      await this.favoritesService.getAllFavorites();
-
-    const records = {
-      tracks: await Promise.all(
-        tracks.map((trackId) => this.trackService.getTrackById(trackId)),
-      ),
-      albums: await Promise.all(
-        albums.map((albumId) => this.albumService.getAlbumById(albumId)),
-      ),
-      artists: await Promise.all(
-        artists.map((artistId) => this.artistService.getArtistById(artistId)),
-      ),
-    };
-
-    return records;
+  async getAllFavorites(): Promise<Favorites> {
+    return await this.favoritesService.getAllFavorites();
   }
 
   @Post('/track/:id')
