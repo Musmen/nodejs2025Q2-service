@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
 
-import { trackDB } from './db/track.db';
+import { prisma } from 'prisma/prisma';
 
 import type { Track } from 'src/interfaces/track.interface';
 
 @Injectable()
 export class TrackService {
-  getAllTracks = async () => trackDB.getAllTracks();
+  getAllTracks = async (): Promise<Track[]> => await prisma.track.findMany();
 
   getTrackById = async (id: string): Promise<Track | null> =>
-    trackDB.getTrackById(id);
+    await prisma.track.findUnique({ where: { id } });
 
-  createTrack = async (newTrackDto: Omit<Track, 'id'>) =>
-    trackDB.createTrack(newTrackDto);
+  createTrack = async (newTrackDto: Omit<Track, 'id'>): Promise<Track> =>
+    await prisma.track.create({ data: newTrackDto });
 
   updateTrack = async (
-    currentTrack: Track,
+    { id }: Track,
     updateTrackDto: Omit<Track, 'id'>,
-  ) => trackDB.updateTrack(currentTrack, updateTrackDto);
+  ): Promise<Track> =>
+    await prisma.track.update({ where: { id }, data: updateTrackDto });
 
-  deleteTrack = async (currentTrack: Track) =>
-    trackDB.deleteTrack(currentTrack);
+  deleteTrack = async ({ id }: Track): Promise<void> => {
+    await prisma.track.delete({ where: { id } });
+  };
 }
