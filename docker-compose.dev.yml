@@ -21,7 +21,7 @@ services:
       - ./nodemon.json:/app/nodemon.json
     restart: on-failure:${RESTART_ATTEMPTS}
   app_database:
-    build: ./database
+    image: musmen/nodejs2025q2-service-app_database
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:

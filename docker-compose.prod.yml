@@ -3,8 +3,7 @@ networks:
     driver: bridge
 services:
   app:
-    build:
-      dockerfile: Dockerfile.prod
+    image: musmen/nodejs2025q2-service-app:latest
     ports:
       - ${APP_PORT}:${APP_PORT}
     environment:
@@ -17,7 +16,7 @@ services:
       - app-network
     restart: on-failure:${RESTART_ATTEMPTS}
   app_database:
-    build: ./database
+    image: musmen/nodejs2025q2-service-app_database
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
