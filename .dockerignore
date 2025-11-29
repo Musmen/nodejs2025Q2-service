@@ -17,7 +17,6 @@ build/
 
 doc/
 
-database/db/
-database/logs/
+database/
 
 generated/prisma/

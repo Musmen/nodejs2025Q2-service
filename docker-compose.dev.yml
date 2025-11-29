@@ -3,7 +3,8 @@ networks:
     driver: bridge
 services:
   app:
-    build: .
+    build:
+      dockerfile: Dockerfile.dev
     ports:
       - ${APP_PORT}:${APP_PORT}
     environment:

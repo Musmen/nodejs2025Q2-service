@@ -1,15 +1,15 @@
 FROM node:24.11.1-alpine3.22
+
 WORKDIR /app
 
 COPY package*.json .
 COPY tsconfig*.json .
 COPY prisma ./prisma/
 
-RUN npm install -g @nestjs/cli
 RUN npm ci --only=production && \
+    npm install -g nodemon @nestjs/cli && \
+    npm prune --production && \
     npm cache clean --force && \
-    rm -rf /tmp/* /var/tmp/*
-
-RUN npm install -g nodemon
+    rm -rf /tmp/* /var/tmp/* ../tmp/* ../var/tmp/*
 
 CMD sh -c "npx prisma migrate reset --force && npx prisma migrate dev --name init add-cascade-delete && npx prisma generate && npm run start:nodemon"

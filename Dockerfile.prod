@@ -1,0 +1,39 @@
+FROM node:24.11.1-alpine3.22 AS builder
+
+WORKDIR /app
+
+COPY package*.json .
+COPY tsconfig*.json .
+COPY prisma ./prisma/
+
+COPY . .
+
+ENV DATABASE_URL="postgresql://musmen:musmen_secret_key@app_database:5432/home_library_service_db?schema=public"
+
+RUN npm ci --only=production && \
+    npm install -g @nestjs/cli && \
+    npm prune --production && \
+    npm cache clean --force && \
+    rm -rf /tmp/* /var/tmp/* ../tmp/* ../var/tmp/* && \
+    npx prisma generate && \
+    npm run build
+
+CMD sh -c "npx prisma migrate reset --force && npx prisma migrate dev --name init add-cascade-delete && npx prisma generate"
+
+FROM node:24.11.1-alpine3.22 AS production
+
+WORKDIR /app
+
+COPY package*.json .
+COPY prisma ./prisma/
+
+RUN npm ci --only=production && \
+    npm prune --production && \
+    npm cache clean --force && \
+    rm -rf /tmp/* /var/tmp/* ../tmp/* ../var/tmp/*
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+
+CMD ["node", "dist/src/main"]
+
